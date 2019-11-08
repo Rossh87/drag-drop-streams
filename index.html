@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>dnd demo</title>
+        <style>
+            .dropzone {
+                width: 20%;
+                border: 2px solid blue;
+                height: 50vh;
+            }
+        </style>
+    </head>
+
+    <body>
+        <header><h1>Drag a file into the box!</h1></header>
+        <div
+            class="dropzone"
+            ondrop="handleDrop(event)"
+            ondragover="handleDragOver(event)"
+        >
+            <ul class="fileList"></ul>
+        </div>
+        <input multiple type="file" class="hidden-input" />
+
+        <script>
+            class UIFileListSubscriber {
+                constructor(domNode) {
+                    this.domNode = domNode;
+
+                    const updateDOM = this.updateDOMOnDataEvent.bind(this);
+
+                    domNode.addEventListener("UIFileListUpdate", updateDOM);
+                }
+
+                removeChildren() {
+                    let child = this.domNode.firstChild;
+
+                    while (child) {
+                        child.remove();
+                        child = this.domNode.firstChild;
+                    }
+                }
+
+                updateDOMOnDataEvent(e) {
+                    this.removeChildren();
+                    const files = e.detail;
+
+                    files.forEach((file) => {
+                        const fileEl = document.createElement("li");
+                        fileEl.textContent = `${file.name}`;
+                        DOMFileDisplay.appendChild(fileEl);
+                    });
+                }
+
+                subscribe(publisher) {
+                    publisher.addSubscriber(this.domNode);
+                }
+            }
+
+            class UIFileList {
+                constructor() {
+                    this.fileList = [];
+                    this.fileCache = new Set();
+                    this.subscribers = [];
+                }
+
+                addFiles(files) {
+                    if (!files.length || files.length === "undefined") {
+                        throw new Error("fn bound in wrong position");
+                    }
+
+                    let newFile;
+
+                    if (files.length < 2) {
+                        debugger;
+                        newFile = files.item(0);
+                        debugger;
+                        console.log(newFile);
+                        if (this.isNotDuplicate(newFile)) {
+                            this.addFile(newFile);
+                        }
+                    } else {
+                        for (let i = 0; i < files.length; i++) {
+                            newFile = files.item(i);
+                            if (this.isNotDuplicate(newFile)) {
+                                this.addFile(newFile);
+                            }
+                        }
+                    }
+
+                    this.publish();
+                }
+
+                isNotDuplicate(file) {
+                    const { name } = file;
+                    return !this.fileCache.has(name);
+                }
+
+                addFile(newFile) {
+                    this.fileList.push(newFile);
+                    this.fileCache.add(newFile.name);
+                }
+
+                addSubscriber(sub) {
+                    this.subscribers.push(sub);
+                }
+
+                publish() {
+                    const publishToSub = function(sub) {
+                        const dataEvent = new CustomEvent("UIFileListUpdate", {
+                            detail: this.fileList
+                        });
+
+                        sub.dispatchEvent(dataEvent);
+                    }.bind(this);
+
+                    this.subscribers.forEach(publishToSub);
+                }
+            }
+            const DOMFileInput = document.querySelector("input");
+            const DOMFileDisplay = document.querySelector(".fileList");
+            const filesList = new UIFileList();
+            const fileDisplay = new UIFileListSubscriber(DOMFileDisplay);
+            fileDisplay.subscribe(filesList);
+
+            DOMFileInput.addEventListener("change", (e) =>
+                filesList.addFiles(DOMFileInput.files)
+            );
+
+            function handleDrop(e) {
+                e.preventDefault();
+                var xfer = e.dataTransfer;
+                var files = xfer.files;
+
+                files.forEach((file) => console.log(file));
+            }
+
+            function handleDragOver(e) {
+                e.preventDefault();
+            }
+        </script>
+    </body>
+</html>
