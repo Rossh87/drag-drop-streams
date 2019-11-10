@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>dnd demo</title>
+        <style>
+            .dropzone {
+                width: 20%;
+                border: 2px solid blue;
+                height: 50vh;
+            }
+        </style>
+        <script src="bundle.js"></script>
+    </head>
+
+    <body>
+        <header><h1>Drag a file into the box!</h1></header>
+        <div class="dropzone">
+            <ul class="file-list"></ul>
+        </div>
+        <input multiple type="file" class="file-input" />
+    </body>
+</html>

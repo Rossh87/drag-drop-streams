@@ -1,7 +1,13 @@
 {
-  "name": "drag_drop_demo",
-  "version": "1.0.0",
-  "main": "index.js",
-  "author": "<hunter.dev.87@gmail.com>",
-  "license": "MIT"
+    "name": "drag_drop_demo",
+    "version": "1.0.0",
+    "main": "index.js",
+    "author": "<hunter.dev.87@gmail.com>",
+    "license": "MIT",
+    "dependencies": {
+        "browserify": "^16.5.0"
+    },
+    "scripts": {
+        "bundle": "browserify src/js/index.js > src/bundle.js"
+    }
 }
