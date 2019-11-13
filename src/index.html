@@ -6,20 +6,54 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>dnd demo</title>
         <style>
-            .dropzone {
-                width: 20%;
+            .container {
+                width: 75%;
+                margin: auto;
+            }
+            .main-content {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .file-input__display,
+            .file-output__display {
+                min-height: 40vh;
                 border: 2px solid blue;
-                height: 50vh;
+            }
+
+            .upload-controls {
+                display: grid;
+                align-content: center;
+                justify-content: center;
             }
         </style>
         <script src="bundle.js"></script>
     </head>
 
     <body>
-        <header><h1>Drag a file into the box!</h1></header>
-        <div class="dropzone">
-            <ul class="file-list"></ul>
-        </div>
-        <input multiple type="file" class="file-input" />
+        <main class="container">
+            <header><h1>Drag a file into the box!</h1></header>
+            <main class="main-content">
+                <div class="file-input">
+                    <div class="file-input__display">
+                        <ul class="file-input__file-list"></ul>
+                    </div>
+                    <div class="file-input__controls">
+                        <input multiple type="file" class="file-input__select" />
+                        <button class="file-input__clear">Clear</button>
+                    </div>
+                </div>
+
+                <div class="upload-controls">
+                    <button class="upload-controls__transform">
+                        Transform!
+                    </button>
+                </div>
+
+                <div class="file-output">
+                    <div class="file-output__display"></div>
+                    <div class="file-output__controls"></div>
+                </div>
+            </div>
+        </main>
     </body>
 </html>

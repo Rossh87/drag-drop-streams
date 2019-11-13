@@ -15,13 +15,16 @@ function init(selector) {
     fileDisplayManager.subscribe(fileList);
 
     // setup the drop zone for drag-and-drop functionality
-    dropManager.setDropTarget(".dropzone");
+    dropManager.setDropTarget(".file-input__display");
 
     // select inputs on page to listen to for selected files
-    fileList.setFileInputSources(".file-input");
+    fileList.setFileInputSources(".file-input__select");
+
+    // select element on page to clear selected files
+    fileList.setClearFiles(".file-input__clear");
 
     // select display element for selected files
-    fileDisplayManager.setFileDisplayElement(".file-list");
+    fileDisplayManager.setFileDisplayElement(".file-input__file-list");
 }
 
 document.addEventListener("DOMContentLoaded", () =>

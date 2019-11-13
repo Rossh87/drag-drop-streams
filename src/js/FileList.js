@@ -33,6 +33,12 @@ class FileList {
         this.publish();
     }
 
+    clearFiles() {
+        this.fileList = [];
+        this.fileCache.clear();
+        this.publish();
+    }
+
     isNotDuplicate(file) {
         const { name } = file;
         return !this.fileCache.has(name);
@@ -83,6 +89,14 @@ class FileList {
         function isUsableFileInput(el) {
             return el.files && el.files instanceof FileList;
         }
+    }
+
+    setClearFiles(selector) {
+        const el = this.DOMselector(selector);
+
+        const clear = this.clearFiles.bind(this);
+
+        el.addEventListener("click", clear);
     }
 }
 

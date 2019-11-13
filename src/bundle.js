@@ -119,6 +119,12 @@ class FileList {
         this.publish();
     }
 
+    clearFiles() {
+        this.fileList = [];
+        this.fileCache.clear();
+        this.publish();
+    }
+
     isNotDuplicate(file) {
         const { name } = file;
         return !this.fileCache.has(name);
@@ -170,6 +176,14 @@ class FileList {
             return el.files && el.files instanceof FileList;
         }
     }
+
+    setClearFiles(selector) {
+        const el = this.DOMselector(selector);
+
+        const clear = this.clearFiles.bind(this);
+
+        el.addEventListener("click", clear);
+    }
 }
 
 module.exports = FileList;
@@ -192,25 +206,20 @@ function init(selector) {
     fileDisplayManager.subscribe(fileList);
 
     // setup the drop zone for drag-and-drop functionality
-    dropManager.setDropTarget(".dropzone");
+    dropManager.setDropTarget(".file-input__display");
 
     // select inputs on page to listen to for selected files
-    fileList.setFileInputSources(".file-input");
+    fileList.setFileInputSources(".file-input__select");
+
+    // select element on page to clear selected files
+    fileList.setClearFiles(".file-input__clear");
 
     // select display element for selected files
-    fileDisplayManager.setFileDisplayElement(".file-list");
+    fileDisplayManager.setFileDisplayElement(".file-input__file-list");
 }
 
-const initArrow = () => init(document.querySelector.bind(document));
-
-if (document.readyState != "loading") initArrow();
-// modern browsers
-else if (document.addEventListener)
-    document.addEventListener("DOMContentLoaded", initArrow);
-// IE <= 8
-else
-    document.attachEvent("onreadystatechange", function() {
-        if (document.readyState == "complete") initArrow();
-    });
+document.addEventListener("DOMContentLoaded", () =>
+    init(document.querySelector.bind(document))
+);
 
 },{"./DropManager":1,"./FileDisplayManager":2,"./FileList":3}]},{},[4]);
