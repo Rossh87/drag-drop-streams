@@ -5,7 +5,8 @@
     "author": "<hunter.dev.87@gmail.com>",
     "license": "MIT",
     "dependencies": {
-        "browserify": "^16.5.0"
+        "browserify": "^16.5.0",
+        "budo": "^11.6.3"
     },
     "scripts": {
         "bundle": "browserify src/js/index.js > build/bundle.js",
