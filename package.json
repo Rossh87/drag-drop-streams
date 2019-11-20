@@ -8,6 +8,7 @@
         "browserify": "^16.5.0"
     },
     "scripts": {
-        "bundle": "browserify src/js/index.js > src/bundle.js"
+        "bundle": "browserify src/js/index.js > build/bundle.js",
+        "build": "cp src/index.html build/index.html && yarn bundle"
     }
 }
