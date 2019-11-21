@@ -1,30 +1,33 @@
-// class for DOM node wrapper that subscribes it to changes to selected files
-const FileDisplayManager = require("./FileDisplayManager");
+const { updateFileInputDisplay, connectToFiles } = require("./domFunctions");
 
-// class for data structure that manages list of currently-selected files
-const FileList = require("./FileList");
+const {
+    handleDrop,
+    handleDrag,
+    handleFileInputChange,
+    clearSelectedFiles
+} = require("./eventHandlers");
 
-const DropManager = require("./DropManager");
+function init(select) {
+    // get needed DOM nodes
+    const dropzone = select(".file-input__display");
+    const fileInputDisplayList = select(".file-input__file-list");
+    const fileInputSelector = select(".file-input__select");
+    const clearButton = select(".file-input__clear");
 
-function init(selector) {
-    const fileDisplayManager = new FileDisplayManager(selector);
-    const fileList = new FileList(selector);
-    const dropManager = new DropManager(fileList, selector);
+    // add drag-and-drop handlers to drop area
+    dropzone.ondrop = handleDrop;
+    dropzone.ondrag = (e) => e.preventDefault();
 
-    // Display manager subscribes to updates from fileList data structure
-    fileDisplayManager.subscribe(fileList);
+    // subscribe file input display to automatically update DOM content
+    // on changes to 'files' property of store
+    connectToFiles(fileInputDisplayList, updateFileInputDisplay);
 
-    // setup the drop zone for drag-and-drop functionality
-    dropManager.setDropTarget(".file-input__display");
+    // dispatch a new file list whenever the contents of the file input
+    // change
+    fileInputSelector.addEventListener("change", handleFileInputChange);
 
-    // select inputs on page to listen to for selected files
-    fileList.setFileInputSources(".file-input__select");
-
-    // select element on page to clear selected files
-    fileList.setClearFiles(".file-input__clear");
-
-    // select display element for selected files
-    fileDisplayManager.setFileDisplayElement(".file-input__file-list");
+    // clear all selected files when 'clear' button is clicked
+    clearButton.addEventListener("click", clearSelectedFiles);
 }
 
 document.addEventListener("DOMContentLoaded", () =>
