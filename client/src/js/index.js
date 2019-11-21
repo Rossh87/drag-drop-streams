@@ -2,7 +2,7 @@ const { updateFileInputDisplay, connectToFiles } = require("./domFunctions");
 
 const {
     handleDrop,
-    handleDrag,
+    handleDragOver,
     handleFileInputChange,
     clearSelectedFiles
 } = require("./eventHandlers");
@@ -16,7 +16,7 @@ function init(select) {
 
     // add drag-and-drop handlers to drop area
     dropzone.ondrop = handleDrop;
-    dropzone.ondrag = (e) => e.preventDefault();
+    dropzone.ondragover = handleDragOver;
 
     // subscribe file input display to automatically update DOM content
     // on changes to 'files' property of store

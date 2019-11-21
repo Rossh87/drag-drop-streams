@@ -3,8 +3,7 @@ const { dispatch } = require("./store");
 
 exports.handleDrop = makeDispatchableHandler(dispatch, handleDrop);
 
-exports.handleDrag = (e) => {
-    debugger;
+exports.handleDragOver = (e) => {
     e.preventDefault();
 };
 
